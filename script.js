@@ -1,10 +1,13 @@
-const canvas = new fabric.Canvas("canvas");
+const canvas = new fabric.Canvas("canvas", {
+  width: 800,
+  height: 600,
+  backgroundColor: "#e9ecef",
+});
 canvas.preserveObjectStacking = true;
 
 let currentShape = null;
 let activeIcon = null;
 
-// --- Элементы интерфейса ---
 const circleBtn = document.getElementById("circle-btn");
 const squareBtn = document.getElementById("square-btn");
 const triangleBtn = document.getElementById("triangle-btn");
@@ -19,7 +22,6 @@ const scaleInput = document.getElementById("scale-input");
 const downloadPngBtn = document.getElementById("download-png");
 const downloadSvgBtn = document.getElementById("download-svg");
 
-// --- Добавление фигуры ---
 function addShape(type) {
   if (currentShape) {
     canvas.remove(currentShape);
@@ -29,7 +31,7 @@ function addShape(type) {
   const color = shapeColorPicker.value;
   const canvasWidth = canvas.width;
   const canvasHeight = canvas.height;
-  const size = Math.min(canvasWidth, canvasHeight) * 0.8;
+  const size = Math.min(canvasWidth, canvasHeight) * 0.7;
 
   let shape;
   switch (type) {
@@ -67,14 +69,13 @@ function addShape(type) {
   currentShape = shape;
   canvas.add(shape);
   canvas.sendToBack(shape);
+  canvas.renderAll();
 }
 
-// --- Клики по кнопкам фигур ---
 circleBtn.addEventListener("click", () => addShape("circle"));
 squareBtn.addEventListener("click", () => addShape("square"));
 triangleBtn.addEventListener("click", () => addShape("triangle"));
 
-// --- Изменение цвета фигуры ---
 shapeColorPicker.addEventListener("input", (e) => {
   if (currentShape) {
     currentShape.set("fill", e.target.value);
@@ -82,7 +83,6 @@ shapeColorPicker.addEventListener("input", (e) => {
   }
 });
 
-// --- Добавление иконки ---
 function addIcon(iconPath) {
   fabric.loadSVGFromURL(iconPath, (objects, options) => {
     let icon =
@@ -90,7 +90,7 @@ function addIcon(iconPath) {
         ? objects[0]
         : fabric.util.groupSVGElements(objects, options);
 
-    icon.scale(0.3);
+    icon.scale(5);
     icon.set("fill", iconColorPicker.value);
 
     if (currentShape) {
@@ -115,7 +115,6 @@ function addIcon(iconPath) {
   });
 }
 
-// --- Клики по иконкам ---
 iconStarBtn.addEventListener("click", () => addIcon("assets/icons/star.svg"));
 iconUmbrellaBtn.addEventListener("click", () =>
   addIcon("assets/icons/umbrella.svg")
@@ -124,10 +123,9 @@ iconTriangleBtn.addEventListener("click", () =>
   addIcon("assets/icons/triangle.svg")
 );
 
-// --- Изменение цвета активной иконки ---
 iconColorPicker.addEventListener("input", (e) => {
   const active = canvas.getActiveObject();
-  if (active) {
+  if (active && active !== currentShape) {
     if (active.type === "group") {
       active.getObjects().forEach((obj) => obj.set("fill", e.target.value));
     } else {
@@ -137,7 +135,6 @@ iconColorPicker.addEventListener("input", (e) => {
   }
 });
 
-// --- Удаление иконки клавишей Delete ---
 document.addEventListener("keydown", (e) => {
   if (e.key === "Delete" || e.key === "Del") {
     const active = canvas.getActiveObject();
@@ -148,28 +145,24 @@ document.addEventListener("keydown", (e) => {
       canvas.renderAll();
     }
   }
-});
 
-// --- Копирование иконки через Ctrl+D ---
-document.addEventListener("keydown", (e) => {
   if (e.ctrlKey && e.key.toLowerCase() === "d") {
     e.preventDefault();
     const active = canvas.getActiveObject();
     if (active && active !== currentShape) {
-      active.clone((clonedObj) => {
-        clonedObj.set({
+      active.clone((cloned) => {
+        cloned.set({
           left: active.left + 30,
           top: active.top + 30,
         });
-        canvas.add(clonedObj);
-        canvas.setActiveObject(clonedObj);
+        canvas.add(cloned);
+        canvas.setActiveObject(cloned);
         canvas.renderAll();
       });
     }
   }
 });
 
-// --- Скачивание изображения ---
 function downloadCanvas(format = "png", scale = 1) {
   const multiplier = isNaN(scale) || scale <= 0 ? 1 : scale;
 
@@ -192,12 +185,9 @@ function downloadCanvas(format = "png", scale = 1) {
   }
 }
 
-// --- Кнопки экспорта ---
 downloadPngBtn.addEventListener("click", () => {
   const scale = parseFloat(scaleInput.value) || 1;
   downloadCanvas("png", scale);
 });
 
-downloadSvgBtn.addEventListener("click", () => {
-  downloadCanvas("svg");
-});
+downloadSvgBtn.addEventListener("click", () => downloadCanvas("svg"));

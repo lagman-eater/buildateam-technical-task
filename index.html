@@ -3,83 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Canvas Editor Test</title>
+    <title>CPB Canvas Editor - Test Task</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
   </head>
   <body>
-    <div class="container">
-      <aside class="toolbar">
-        <h2>Инструменты</h2>
-
-        <div class="shapes-row">
-          <button id="circle-btn" title="Circle">
-            <img src="assets/icons/circle.svg" alt="circle" />
-          </button>
-          <button id="square-btn" title="Square">
-            <img src="assets/icons/square.svg" alt="square" />
-          </button>
-          <button id="triangle-btn" title="Triangle">
-            <img src="assets/icons/triangle-figure.svg" alt="triangle" />
-          </button>
-        </div>
-
-        <label for="shape-color">Цвет фигуры:</label>
-        <input
-          type="color"
-          class="input-color"
-          id="shape-color"
-          value="#ffffff"
-        />
-
-        <hr />
-
-        <h3>Иконки</h3>
-        <div class="icons-row">
-          <button id="icon-star">
-            <img src="assets/icons/star.svg" alt="star" />
-          </button>
-          <button id="icon-umbrella">
-            <img src="assets/icons/umbrella.svg" alt="umbrella" />
-          </button>
-          <button id="icon-triangle">
-            <img src="assets/icons/triangle.svg" alt="triangle" />
-          </button>
-        </div>
-
-        <label for="icon-color">Цвет иконки:</label>
-        <input
-          type="color"
-          class="input-color"
-          id="icon-color"
-          value="#e67e22"
-        />
-
-        <hr />
-
-        <!-- Блок экспорта -->
-        <h3 class="export-title">ЭКСПОРТ</h3>
-        <div class="export-block">
-          <label for="scale-input">Масштаб:</label>
-          <input
-            type="number"
-            id="scale-input"
-            min="1"
-            max="5"
-            step="0.5"
-            value="1"
-          />
-
-          <div class="export-buttons">
-            <button id="download-png">PNG</button>
-            <button id="download-svg">SVG</button>
+    <div class="page-container">
+      <!-- Внутренний контейнер для spacing -->
+      <div class="inner-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <!-- Header -->
+          <div class="sidebar-header">
+            Diushembiev Aidar test task Shopify Dev Department
           </div>
-        </div>
-      </aside>
 
-      <main class="canvas-area">
-        <canvas id="canvas" width="600" height="400"></canvas>
-      </main>
+          <!-- Контент меню -->
+          <div class="sidebar-content">
+            <div class="section">
+              <h2 class="section-title">ФОН</h2>
+              <div class="button-row">
+                <button id="circle-btn" class="shape-btn" title="Circle">
+                  <img src="assets/icons/circle.svg" alt="circle" />
+                </button>
+                <button id="square-btn" class="shape-btn" title="Square">
+                  <img src="assets/icons/square.svg" alt="square" />
+                </button>
+                <button id="triangle-btn" class="shape-btn" title="Triangle">
+                  <img src="assets/icons/triangle-figure.svg" alt="triangle" />
+                </button>
+              </div>
+              <div class="input-group">
+                <label for="shape-color" class="label">Цвет фона:</label>
+                <input
+                  type="color"
+                  id="shape-color"
+                  class="color-input"
+                  value="#ffffff"
+                />
+              </div>
+            </div>
+
+            <div class="section">
+              <h3 class="subsection-title">ИКОНКИ</h3>
+              <div class="button-row">
+                <button id="icon-star" class="icon-btn" title="Star">
+                  <img src="assets/icons/star.svg" alt="star" />
+                </button>
+                <button id="icon-umbrella" class="icon-btn" title="Umbrella">
+                  <img src="assets/icons/umbrella.svg" alt="umbrella" />
+                </button>
+                <button id="icon-triangle" class="icon-btn" title="Triangle">
+                  <img src="assets/icons/triangle.svg" alt="triangle" />
+                </button>
+              </div>
+              <div class="input-group">
+                <label for="icon-color" class="label">Цвет иконки:</label>
+                <input
+                  type="color"
+                  id="icon-color"
+                  class="color-input"
+                  value="#e67e22"
+                />
+              </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="section">
+              <h3 class="subsection-title">ЭКСПОРТ</h3>
+              <div class="input-group">
+                <label for="scale-input" class="label">Масштаб:</label>
+                <input
+                  type="number"
+                  id="scale-input"
+                  class="scale-input"
+                  value="1"
+                  min="1"
+                  max="5"
+                  step="0.5"
+                />
+              </div>
+              <div class="export-buttons">
+                <button id="download-png" class="export-btn">PNG</button>
+                <button id="download-svg" class="export-btn">SVG</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-text">
+            Фон меняется только тип и цвет. Иконки можно перемещать, вращать,
+            удалять [Del], дублировать [Ctrl+D].
+          </div>
+        </aside>
+
+        <!-- Canvas Area -->
+        <main class="canvas-area">
+          <canvas id="canvas"></canvas>
+        </main>
+      </div>
     </div>
 
     <script src="script.js"></script>
